@@ -18,7 +18,7 @@ test:
     - echo "Host testserver" >> ~/.ssh/config
     - echo "User ec2-user" >> ~/.ssh/config
     - sleep 60
-    # - ssh ec2-user@testserver sudo yum update -y
+    - ssh ec2-user@testserver sudo yum update -y
   override:
     - ansible-playbook -i ansible/hosts ansible/web.yml -e "sshd=start" -e "datadog=false"
     - bundle exec rake spec:testserver
