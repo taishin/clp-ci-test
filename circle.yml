@@ -1,0 +1,8 @@
+machine:
+  ruby:
+    version:
+      2.1.2
+
+test:
+  override:
+    - aws ec2 run-instances --image-id ami-29160d47 --count 1 --instance-type t2.micro --key-name circleci-20160512 --security-group-ids sg-f69d1192 --subnet-id subnet-50c6c827 --associate-public-ip-address
