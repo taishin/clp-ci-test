@@ -12,7 +12,6 @@ test:
     - echo "`cat /tmp/publicip.txt` testserver" >> /tmp/hosts.txt
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
-    - dig testserver
     - ssh ec2-user@testserver pwd
-  post:
-    - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
+  # post:
+  #   - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
