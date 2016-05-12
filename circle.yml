@@ -17,7 +17,7 @@ test:
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
     - echo "Host testserver" >> ~/.ssh/config
     - echo "User ec2-user" >> ~/.ssh/config
-    - sed -e "N;s/- hosts: localhost\n  connection: local/- hosts: testserver\n/g" web.yml > web-test.yml
+    - sed -e 's/localhost/testserver/g' web.yml | sed -e "/connection.*//g" > web-test.yml
     - sleep 60
     - ssh ec2-user@testserver sudo yum update -y
   override:
