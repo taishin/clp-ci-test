@@ -1,0 +1,21 @@
+- name: (aws sdk) aws sdk install
+  pip: name={{ item }}
+  with_items:
+    - awscli
+    - boto3
+
+- name: install awslogs agent
+  yum: name=awslogs
+
+- name: copy /etc/awslogs/
+  copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
+  notify: restart awslogs agent
+
+- name: set region to /etc/awslogs/awscli.conf
+  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace=ap-northeast-1
+  notify: restart awslogs agent
+
+- name: download ssm agent
+  get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
+- name: install ssm agent
+  yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present

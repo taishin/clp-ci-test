@@ -20,7 +20,7 @@ test:
     - sleep 60
     # - ssh ec2-user@testserver sudo yum update -y
   override:
-    - ansible-playbook -i ansible/hosts ansible/nginx.yml
+    - ansible-playbook -i ansible/hosts ansible/web.yml -e "sshd=start"
     - bundle exec rake spec:testserver
   post:
-    # - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
+    - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`

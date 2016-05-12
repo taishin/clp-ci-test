@@ -1,0 +1,32 @@
+- name: install php-fpm
+  yum: name=php-fpm
+
+- name: copy /etc/php-fpm.d/
+  copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
+  notify: restart php-fpm
+
+- name: start php-fpm
+  service: name=php-fpm state=started enabled=yes
+
+#- name: install APC
+#  yum: name=php-pecl-apc
+
+- name: copy /etc/nginx/default.d/
+  copy: src=etc/nginx/default.d/ dest=/etc/nginx/default.d/ backup=yes
+  notify: restart nginx
+
+- name: copy /usr/share/nginx/html/
+  copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/ backup=yes
+
+## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
+- name: copy /etc/awslogs/config/
+  copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
+  notify: restart awslogs agent
+
+- name: copy /etc/etc/dd-agent/
+  copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
+  when: datadog == "true"
+  notify: restart datadog-agent
+
+- name: copy /etc/logrotate.d/
+  copy: src=/etc/logrotate.d/ dest=/etc/logrotate.d/

@@ -1,0 +1,8 @@
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: restart awslogs agent
+  service: name=awslogs state=restarted enabled=yes
+
+- name: restart datadog-agent
+  service: name=datadog-agent state=restarted

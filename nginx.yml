@@ -1,6 +1,0 @@
----
-- hosts: testserver
-  become: yes
-  tasks:
-    - name: install nginx
-      yum: name=nginx
