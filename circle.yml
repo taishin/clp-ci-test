@@ -13,3 +13,5 @@ test:
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
     - ping testserver
+  post:
+    - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
