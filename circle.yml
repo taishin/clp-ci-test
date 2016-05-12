@@ -5,13 +5,14 @@ machine:
 
 test:
   override:
-    - aws ec2 run-instances --image-id ami-29160d47 --count 1 --instance-type t2.micro --key-name sasaki-20160511 --security-group-ids sg-f69d1192 --subnet-id subnet-50c6c827 --associate-public-ip-address | jq -r '.Instances[].InstanceId' > /tmp/instanceid.txt
+    - aws ec2 run-instances --image-id ami-29160d47 --count 1 --instance-type t2.micro --key-name sasaki-20160511 --security-group-ids sg-ac9e12c8 --subnet-id subnet-50c6c827 --associate-public-ip-address | jq -r '.Instances[].InstanceId' > /tmp/instanceid.txt
     - sleep 20
     - aws ec2 describe-instances --instance-id `cat /tmp/instanceid.txt` | jq -r '.Reservations[] .Instances[] .PublicIpAddress' > /tmp/publicip.txt
     - echo $publicip
     - echo "`cat /tmp/publicip.txt` testserver" >> /tmp/hosts.txt
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
-    - ping -c 3 testserver
+    - dig testserver
+    - ssh ec2-user@testserver pwd
   post:
     - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
