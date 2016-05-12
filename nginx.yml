@@ -1,3 +1,4 @@
+---
 - hosts: testserver
   become: yes
   tasks:
