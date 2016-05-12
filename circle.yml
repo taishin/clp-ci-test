@@ -12,6 +12,6 @@ test:
     - echo "`cat /tmp/publicip.txt` testserver" >> /tmp/hosts.txt
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
-    - ping testserver
+    - ping -c 3 testserver
   post:
     - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
