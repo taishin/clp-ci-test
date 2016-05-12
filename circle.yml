@@ -15,12 +15,12 @@ test:
     - echo "`cat /tmp/publicip.txt` testserver" >> /tmp/hosts.txt
     - cp /etc/hosts .
     - sudo bash -c "cat hosts /tmp/hosts.txt | tee /etc/hosts"
-    - echo "Host testserver" >> .ssh/config
-    - echo "User ec2-user" >> .ssh/config
+    - echo "Host testserver" >> ~/.ssh/config
+    - echo "User ec2-user" >> ~/.ssh/config
     - sleep 60
     # - ssh ec2-user@testserver sudo yum update -y
   override:
     - ansible-playbook -i ansible/hosts ansible/nginx.yml
-
+    - bundle exec rake spec:testserver
   post:
     # - aws ec2 terminate-instances --instance-ids `cat /tmp/instanceid.txt`
